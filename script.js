@@ -86,7 +86,7 @@
   updateParallaxAvailability();
 
   // Stagger each visible row from left to right, matching the responsive grid.
-  const artworkGroups = [...document.querySelectorAll('.ad-grid,.color-grid,.film-stills')];
+  const artworkGroups = [...document.querySelectorAll('.ad-grid,.color-grid,.film-stills,.process-asset-grid,.process-sequence-grid')];
   function updateRevealOrder() {
     artworkGroups.forEach(group => {
       const columns = getComputedStyle(group).gridTemplateColumns.split(' ').length;
@@ -126,11 +126,89 @@
   const dialog = document.getElementById('lightbox');
   const image = document.getElementById('lightbox-image');
   const imageError = document.getElementById('image-error');
+  const imageWrap = document.querySelector('.lightbox-image-wrap');
+  const zoomToolbar = document.getElementById('lightbox-zoom');
+  const zoomLevel = document.getElementById('zoom-level');
+  const zoomIn = document.getElementById('zoom-in');
+  const zoomOut = document.getElementById('zoom-out');
+  const zoomFit = document.getElementById('zoom-fit');
+  const zoomOriginal = document.getElementById('zoom-original');
+  let imageScale = null;
+  let zoomReady = false;
+  let drag = null;
   let currentArt = 0;
   let returnFocus = null;
   let dialogAnimation = null;
   let imageAnimation = null;
   let dialogClosing = false;
+  function fitImageScale() {
+    if (!image.naturalWidth || !image.naturalHeight) return 1;
+    const padding = getComputedStyle(imageWrap);
+    const width = imageWrap.clientWidth - parseFloat(padding.paddingLeft) - parseFloat(padding.paddingRight);
+    const height = imageWrap.clientHeight - parseFloat(padding.paddingTop) - parseFloat(padding.paddingBottom);
+    return Math.min(1,width/image.naturalWidth,height/image.naturalHeight);
+  }
+  function updateZoomControls() {
+    if (zoomToolbar.hidden) return;
+    const fit = fitImageScale();
+    const scale = imageScale ?? fit;
+    zoomLevel.textContent = zoomReady ? `${Math.round(scale*100)}%` : '加载中';
+    zoomIn.disabled = !zoomReady || scale >= 2;
+    zoomOut.disabled = !zoomReady || scale <= fit + 0.001;
+    zoomFit.disabled = zoomOriginal.disabled = !zoomReady;
+  }
+  function resetImageZoom() {
+    imageScale = null;
+    drag = null;
+    image.style.removeProperty('width');
+    image.style.removeProperty('height');
+    imageWrap.classList.remove('is-zoomed','is-dragging');
+    imageWrap.removeAttribute('tabindex');
+    imageWrap.scrollLeft = imageWrap.scrollTop = 0;
+    updateZoomControls();
+  }
+  function setImageScale(scale) {
+    if (!zoomReady || zoomToolbar.hidden) return;
+    const fit = fitImageScale();
+    if (scale <= fit + 0.001) { resetImageZoom();return; }
+    const previousScale = imageScale ?? fit;
+    const viewport = imageWrap.getBoundingClientRect();
+    const before = image.getBoundingClientRect();
+    const viewportX = viewport.left + imageWrap.clientLeft + imageWrap.clientWidth/2;
+    const viewportY = viewport.top + imageWrap.clientTop + imageWrap.clientHeight/2;
+    const centerX = (viewportX - before.left)/previousScale;
+    const centerY = (viewportY - before.top)/previousScale;
+    imageScale = Math.min(2,Math.max(fit,scale));
+    imageWrap.classList.add('is-zoomed');
+    imageWrap.tabIndex = 0;
+    image.style.width = `${image.naturalWidth*imageScale}px`;
+    image.style.height = `${image.naturalHeight*imageScale}px`;
+    const after = image.getBoundingClientRect();
+    imageWrap.scrollLeft += after.left + centerX*imageScale - viewportX;
+    imageWrap.scrollTop += after.top + centerY*imageScale - viewportY;
+    updateZoomControls();
+  }
+  zoomIn.addEventListener('click',() => setImageScale((imageScale ?? fitImageScale())*1.5));
+  zoomOut.addEventListener('click',() => setImageScale((imageScale ?? fitImageScale())/1.5));
+  zoomFit.addEventListener('click',resetImageZoom);
+  zoomOriginal.addEventListener('click',() => setImageScale(1));
+  imageWrap.addEventListener('pointerdown',event => {
+    if (imageScale === null || event.pointerType !== 'mouse' || event.button !== 0) return;
+    drag = {id:event.pointerId,x:event.clientX,y:event.clientY,left:imageWrap.scrollLeft,top:imageWrap.scrollTop};
+    imageWrap.setPointerCapture(event.pointerId);
+    imageWrap.classList.add('is-dragging');
+    event.preventDefault();
+  });
+  imageWrap.addEventListener('pointermove',event => {
+    if (!drag || drag.id !== event.pointerId) return;
+    imageWrap.scrollLeft = drag.left + drag.x - event.clientX;
+    imageWrap.scrollTop = drag.top + drag.y - event.clientY;
+  });
+  ['pointerup','pointercancel','lostpointercapture'].forEach(type => imageWrap.addEventListener(type,() => {
+    drag = null;
+    imageWrap.classList.remove('is-dragging');
+  }));
+  if ('ResizeObserver' in window) new ResizeObserver(updateZoomControls).observe(imageWrap);
   function closeLightbox() {
     if (!dialog.open || dialogClosing) return;
     dialogClosing = true;
@@ -149,6 +227,9 @@
   function showArtwork(index) {
     currentArt = (index + artworks.length) % artworks.length;
     const source = artworks[currentArt];
+    zoomReady = false;
+    zoomToolbar.hidden = source.dataset.zoomable !== 'true';
+    resetImageZoom();
     imageError.hidden = true;
     image.classList.add('is-loading');
     image.src = source.dataset.lightbox;
@@ -173,6 +254,8 @@
     }
   }));
   image.addEventListener('load', () => {
+    zoomReady = true;
+    updateZoomControls();
     image.classList.remove('is-loading');
     imageAnimation?.cancel();
     if (!reducedMotion.matches && dialog.open && !dialogClosing && image.animate) {
@@ -182,7 +265,7 @@
       ], {duration:260,easing:'cubic-bezier(.16,1,.3,1)'});
     }
   });
-  image.addEventListener('error', () => { image.classList.remove('is-loading'); imageError.hidden = false; });
+  image.addEventListener('error', () => { zoomReady = false;updateZoomControls();image.classList.remove('is-loading');imageError.hidden = false; });
   document.getElementById('close-lightbox').addEventListener('click', closeLightbox);
   document.getElementById('previous-art').addEventListener('click', () => showArtwork(currentArt - 1));
   document.getElementById('next-art').addEventListener('click', () => showArtwork(currentArt + 1));
@@ -193,6 +276,7 @@
     dialog.classList.remove('is-closing');
     dialogAnimation?.cancel();
     imageAnimation?.cancel();
+    resetImageZoom();
     document.body.classList.remove('modal-open');
     returnFocus?.focus({preventScroll:true});
   });
@@ -203,6 +287,12 @@
     }
   });
   dialog.addEventListener('keydown', event => {
+    if (!zoomToolbar.hidden && zoomReady) {
+      if (event.key === '+' || event.key === '=') { event.preventDefault();setImageScale((imageScale ?? fitImageScale())*1.5);return; }
+      if (event.key === '-') { event.preventDefault();setImageScale((imageScale ?? fitImageScale())/1.5);return; }
+      // A focused, enlarged canvas uses the browser's native arrow-key scrolling.
+      if (event.target === imageWrap && imageScale !== null) return;
+    }
     if (event.key === 'ArrowRight') { event.preventDefault(); showArtwork(currentArt + 1); }
     if (event.key === 'ArrowLeft') { event.preventDefault(); showArtwork(currentArt - 1); }
   });
