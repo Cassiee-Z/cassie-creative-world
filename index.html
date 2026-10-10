@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f2e7">
-  <meta name="description" content="查文鑫 CassieZha 的创意作品集。广告创意、产品视觉与影像叙事，收录 JOYO 系列视觉作品及短片《冬烬之地》。">
+  <meta name="description" content="查文鑫 CassieZha 的创意作品集。广告创意、产品视觉、音乐创作与影像叙事，收录 JOYO 系列视觉作品、18 首音乐作品及短片《冬烬之地》。">
   <meta property="og:title" content="CassieZha / 创意世界">
-  <meta property="og:description" content="从音乐出发，把声音变成画面。广告创意、影像、视觉设计。">
+  <meta property="og:description" content="从音乐出发，把声音变成画面。广告创意、音乐创作、影像与视觉设计。">
   <meta property="og:image" content="https://cassiee-z.github.io/cassie-creative-world/assets/images/creative-world.webp">
   <meta property="og:url" content="https://cassiee-z.github.io/cassie-creative-world/">
   <meta property="og:type" content="website">
@@ -15,9 +15,11 @@
   <link rel="preload" href="./assets/fonts/anton-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="./assets/images/creative-world.webp" media="(min-width:768px)" as="image" fetchpriority="high">
   <link rel="preload" href="./assets/images/creative-world-mobile.webp" media="(max-width:767px)" as="image" fetchpriority="high">
-  <link rel="stylesheet" href="./styles.css?v=motion-20261010">
+  <link rel="stylesheet" href="./styles.css?v=music-20261010">
   <script src="./site-config.js" defer></script>
-  <script src="./script.js?v=motion-20261010" defer></script>
+  <script src="./music-data.js?v=music-20261010" defer></script>
+  <script src="./script.js?v=music-20261010" defer></script>
+  <script src="./music.js?v=music-20261010" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#works">跳到作品</a>
@@ -28,7 +30,7 @@
     <span class="portfolio-year">PORTFOLIO <span>/</span> 2026</span>
     <button class="menu-toggle" aria-expanded="false" aria-controls="main-nav">菜单 <span aria-hidden="true">＋</span></button>
     <nav id="main-nav" aria-label="主导航">
-      <a href="#works">作品</a><a href="#about">关于我</a><a href="#contact">联系</a>
+      <a href="#works">作品</a><a href="#music">音乐</a><a href="#about">关于我</a><a href="#contact">联系</a>
     </nav>
   </header>
   <main>
@@ -50,7 +52,7 @@
 
     <section class="work-intro section-wrap reveal" id="works">
       <div class="intro-title"><p class="section-kicker">SELECTED WORKS</p><h2>让创意，<br>被看见。</h2></div>
-      <div class="intro-note"><p>从音乐出发，<br>在广告、视觉与影像之间探索。</p><nav class="work-index" aria-label="作品分类"><a href="#ad-creative">广告创意 <span>↗</span></a><a href="#color-everyday">色彩与日常 <span>↗</span></a><a href="#winter-embers">影像叙事 <span>↗</span></a></nav></div>
+      <div class="intro-note"><p>从音乐出发，<br>在广告、视觉与影像之间探索。</p><nav class="work-index" aria-label="作品分类"><a href="#ad-creative">广告创意 <span>↗</span></a><a href="#color-everyday">色彩与日常 <span>↗</span></a><a href="#music">音乐创作 <span>↗</span></a><a href="#winter-embers">影像叙事 <span>↗</span></a></nav></div>
     </section>
 
     <section class="ad-section section-wrap" id="ad-creative">
@@ -73,6 +75,30 @@
         <figure class="artwork color-jam reveal"><button class="image-button" data-lightbox="./assets/images/joyo-jam.webp" data-title="JAM BUDDY / 户外音乐海报" data-description="去草地上，弹一会儿。以明亮色彩呈现户外音乐体验。" aria-label="放大 JAM BUDDY 户外音乐海报"><img src="./assets/images/joyo-jam.webp" srcset="./assets/images/joyo-jam-400.webp 400w, ./assets/images/joyo-jam-800.webp 800w, ./assets/images/joyo-jam.webp 941w" sizes="(max-width:767px) calc(100vw - 44px), (max-width:1600px) calc((100vw - 160px)/2), 680px" width="941" height="1672" alt="蓝天与草地上的 JAM BUDDY 海报，两位吉他手在户外演奏" loading="lazy"><span class="expand-mark" aria-hidden="true">↗</span></button><figcaption><strong>JAM BUDDY</strong><span>户外音乐海报</span></figcaption></figure>
       </div>
       <div class="lookbook-link reveal"><button class="text-link" data-lightbox="./assets/images/color-lookbook.webp" data-title="色彩与日常 / 完整排版" data-description="JOYO 产品视觉作品集">查看完整排版 <span aria-hidden="true">↗</span></button></div>
+    </section>
+
+    <section class="music-section section-wrap" id="music" aria-labelledby="music-heading">
+      <div class="editorial-heading reveal"><h2 class="display-title" id="music-heading">SOUND &amp;<br>STORIES</h2><div class="heading-caption"><span>音乐创作</span><p>17 首歌曲<span class="music-caption-separator"> · </span><span class="music-caption-score">1 首影视配乐</span></p></div></div>
+      <p class="section-description reveal">有些故事，先被听见。用声音记录日常，也让情绪有自己的形状。</p>
+      <div class="music-feature reveal" id="music-feature">
+        <button class="music-cover-button" id="music-toggle" aria-label="播放 MIDNIGHT SIGNAL" aria-controls="music-audio">
+          <img id="music-cover" src="./assets/images/music/midnight-signal.webp" width="360" height="360" loading="lazy" alt="MIDNIGHT SIGNAL 音频封面">
+          <span class="music-cover-fallback" id="music-cover-fallback" hidden><span>CASSIEZHA / MUSIC</span><strong id="music-fallback-title"></strong></span>
+          <span class="music-cover-play" id="music-cover-symbol" aria-hidden="true">▶</span>
+        </button>
+        <div class="music-feature-copy">
+          <div class="music-feature-top"><p class="music-listening-status" id="music-status" role="status">准备试听</p><span id="music-position">01 / 18 · 01:55</span></div>
+          <h3 id="music-title">MIDNIGHT SIGNAL</h3>
+          <p class="music-credit"><span id="music-kind">英文歌曲</span><span aria-hidden="true"> / </span>制作 · CassieZha</p>
+          <audio id="music-audio" controls preload="none" src="./assets/audio/midnight-signal.mp3" aria-label="音乐作品播放器">你的浏览器暂不支持音频播放，可以<a href="./assets/audio/midnight-signal.mp3">打开音频</a>试听。</audio>
+          <div class="music-transport"><button id="music-previous" aria-label="播放上一首"><span aria-hidden="true">←</span> 上一首</button><button id="music-next" aria-label="播放下一首">下一首 <span aria-hidden="true">→</span></button></div>
+          <p class="music-error" id="music-error" role="alert" hidden>音频暂时无法播放，可以<a id="music-open" href="./assets/audio/midnight-signal.mp3" target="_blank" rel="noopener">打开音频</a>试听。</p>
+        </div>
+      </div>
+      <div class="music-library">
+        <div class="music-library-top"><div class="music-filters" role="group" aria-label="音乐作品筛选"><button data-music-filter="all" aria-pressed="true">全部 <span>18</span></button><button data-music-filter="chinese" aria-pressed="false">中文 <span>13</span></button><button data-music-filter="english" aria-pressed="false">英文 <span>4</span></button><button data-music-filter="soundtrack" aria-pressed="false">影视配乐 <span>1</span></button></div><p class="music-library-count" id="music-library-count" role="status">18 首作品</p></div>
+        <ul class="music-track-grid" id="music-track-list" aria-label="音乐作品列表"></ul>
+      </div>
     </section>
 
     <section class="film-section section-wrap" id="winter-embers">
