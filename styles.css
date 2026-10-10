@@ -1,6 +1,6 @@
 @font-face{font-family:Anton;src:url('./assets/fonts/anton-latin.woff2') format('woff2');font-display:swap;font-weight:400}
 @font-face{font-family:Space Grotesk;src:url('./assets/fonts/space-grotesk-latin.woff2') format('woff2');font-display:swap;font-weight:300 700}
-/* Reference-led art direction: DESIGN_VARIANCE 8 / MOTION_INTENSITY 4 / VISUAL_DENSITY 3.
+/* Reference-led art direction: DESIGN_VARIANCE 8 / MOTION_INTENSITY 5 / VISUAL_DENSITY 3.
    Native CSS, print-inspired light theme from the supplied artwork.
    Sharp media edges; pill buttons only. Layers: header 10, mobile menu 11, native dialog top layer. */
 :root{--paper:#f5f2e7;--ink:#0b0e11;--muted:#555950;--accent:#20e7c4;--line:#111613;--header-height:88px;--max-width:1400px;--page-gutter:clamp(24px,4vw,72px)}
@@ -37,6 +37,9 @@ figure,p,h1,h2,h3{margin:0}
 .hero-scene{height:100%;width:100%;position:relative;container-type:size}
 .hero-art{position:absolute;left:50%;top:50%;width:max(100cqw,198.8cqh);height:max(50.3cqw,100cqh);transform:translate(-50%,-50%);container-type:size}
 .hero-background{position:absolute;inset:0}
+.hero-title-layer{position:absolute;inset:0}
+.has-parallax .hero-background{transform:translate3d(var(--scene-x,0px),var(--scene-y,0px),0) scale(1.025);will-change:transform}
+.has-parallax .hero-title-layer{transform:translate3d(var(--title-x,0px),var(--title-y,0px),0);will-change:transform}
 .hero-image{width:100%;height:100%;object-fit:cover}
 .hero-heading{position:absolute;top:10.1%;left:50%;width:26%;transform:translateX(-50%) rotate(-2deg);font-family:Anton,sans-serif;font-weight:400;text-align:center;color:#f7f3e8;line-height:.98;letter-spacing:.018em;text-shadow:1px 1px 0 #d1c8b5,2px 2px 0 #c6bca8,3px 3px 0 #b6ac98,4px 4px 0 #b6ac98,5px 5px 0 #8e8779,6px 6px 0 #080a0c,7px 7px 0 #080a0c}
 .hero-heading span{display:block;white-space:nowrap}
@@ -44,11 +47,16 @@ figure,p,h1,h2,h3{margin:0}
 .hero-creative{font-size:4.9cqw;margin-top:6px}
 .hero-world{font-size:6.95cqw;margin-top:2px}
 .hero-entry{position:absolute;left:50%;top:74.5%;transform:translateX(-50%);text-align:center;width:max-content}
-.entry-button{display:flex;align-items:center;justify-content:center;gap:20px;border-radius:100px;background:var(--ink);color:var(--paper);font-size:22px;font-weight:650;letter-spacing:2px;padding:14px 37px;white-space:nowrap;transition:transform .25s,background .25s}
-.entry-button:hover{transform:translateY(-3px);background:#16221e}
-.entry-button:active{transform:scale(.97)}
+.entry-button{display:flex;align-items:center;justify-content:center;gap:20px;border-radius:100px;background:var(--ink);color:var(--paper);font-size:22px;font-weight:650;letter-spacing:2px;padding:14px 37px;white-space:nowrap;position:relative;isolation:isolate;overflow:hidden;transition:transform .3s cubic-bezier(.34,1.56,.64,1),color .2s}
+.entry-button::before{content:'';position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--accent);transform:translateX(-102%);transition:transform .36s cubic-bezier(.16,1,.3,1)}
+.entry-button:focus-visible,.entry-button:active{color:var(--ink)}
+.entry-button:focus-visible::before,.entry-button:active::before{transform:translateX(0)}
+.entry-button:focus-visible .play-symbol,.entry-button:active .play-symbol{color:var(--ink)}
+.entry-button:focus-visible .entry-arrow{transform:translate(3px,-3px)}
+.entry-button:active{transform:translateY(-1px) scale(.965)}
 .play-symbol{color:var(--accent);font-size:25px;line-height:1}
-.entry-arrow{font-size:27px;line-height:1;font-weight:400}
+.entry-arrow{font-size:27px;line-height:1;font-weight:400;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+@media(hover:hover){.entry-button:hover{transform:translateY(-3px);color:var(--ink)}.entry-button:hover::before{transform:translateX(0)}.entry-button:hover .play-symbol{color:var(--ink)}.entry-button:hover .entry-arrow{transform:translate(3px,-3px)}.entry-button:hover:active{transform:translateY(-1px) scale(.965)}}
 .hero-entry p{margin-top:16px;font-size:14px;font-weight:550;letter-spacing:1px}
 .hero-entry p span{padding:0 7px}
 .hero-down{display:block;width:46px;margin:12px auto 0;font-size:45px;line-height:1.1;font-weight:300}
@@ -174,6 +182,7 @@ details[open] .detail-plus{transform:rotate(45deg)}
 .lightbox{position:fixed;max-width:min(1100px,95vw);width:100%;height:min(94dvh,1100px);max-height:94dvh;padding:0;border:0;background:var(--paper);color:var(--ink);overflow:hidden}
 .lightbox[open]{display:flex;flex-direction:column}
 .lightbox::backdrop{background:rgba(7,10,15,.88)}
+.lightbox.is-closing::backdrop{opacity:0;animation:none}
 .lightbox-toolbar{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding:20px 28px;border-bottom:1px solid rgba(11,14,17,.14);flex-shrink:0}
 .lightbox-toolbar h2{font-size:16px;font-weight:650}
 .lightbox-toolbar p{font-size:12px;line-height:1.6;margin-top:5px;color:var(--muted)}
@@ -190,8 +199,10 @@ details[open] .detail-plus{transform:rotate(45deg)}
 @media(prefers-reduced-motion:no-preference){
   .hero-heading{animation:hero-enter .75s cubic-bezier(.16,1,.3,1) both}
   .hero-entry{animation:entry-enter .65s .15s cubic-bezier(.16,1,.3,1) both}
-  .will-reveal{opacity:0;transform:translateY(22px);transition:opacity .65s,transform .65s cubic-bezier(.16,1,.3,1)}
+  .will-reveal{opacity:0;transform:translateY(22px);transition:opacity .65s,transform .65s cubic-bezier(.16,1,.3,1);transition-delay:var(--reveal-delay,0ms)}
   .will-reveal.is-visible{opacity:1;transform:none}
+  .lightbox::backdrop{animation:backdrop-enter .24s both;transition:opacity .16s}
+  @keyframes backdrop-enter{from{opacity:0}to{opacity:1}}
   @keyframes hero-enter{from{opacity:0;transform:translate(-50%,18px) rotate(-2deg)}to{opacity:1;transform:translateX(-50%) rotate(-2deg)}}
   @keyframes entry-enter{from{opacity:0;transform:translate(-50%,14px)}to{opacity:1;transform:translateX(-50%)}}
 }
@@ -236,4 +247,4 @@ details[open] .detail-plus{transform:rotate(45deg)}
   .lightbox{max-width:96vw;height:90dvh;max-height:90dvh}.lightbox-toolbar{padding:17px 16px;gap:12px}.lightbox-toolbar h2{font-size:13px}.lightbox-toolbar p{font-size:10px}.close-button{font-size:28px;width:32px;height:32px}.lightbox-image-wrap{padding:12px}.lightbox-footer{padding:10px 16px}.lightbox-footer button{font-size:17px;gap:8px}.lightbox-footer button span{font-size:10px}
 }
 @media(max-width:359px){.portfolio-year{display:none}.hero{min-height:530px}.color-section .display-title{font-size:48px}.heading-caption>span{font-size:15px}.email-address{font-size:18px}.about-heading h2>span{font-size:58px}.contact-heading h2{font-size:48px}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.will-reveal{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.will-reveal{opacity:1;transform:none}.has-parallax .hero-background,.has-parallax .hero-title-layer{transform:none;will-change:auto}}

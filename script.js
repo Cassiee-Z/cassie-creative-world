@@ -1,5 +1,7 @@
 (() => {
   'use strict';
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
   const menuButton = document.querySelector('.menu-toggle');
   const nav = document.getElementById('main-nav');
   menuButton.addEventListener('click', () => {
@@ -21,8 +23,85 @@
     }
   });
 
-  // IntersectionObserver reveals content in reading order without scroll listeners.
-  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  // The artwork and title move on separate layers. Only unsettled motion uses frames.
+  const heroScene = document.querySelector('.hero-scene');
+  let heroVisible = true;
+  let motionFrame = null;
+  let lastFrameTime = 0;
+  const pointer = {x:0,y:0,targetX:0,targetY:0};
+  function resetParallax() {
+    if (motionFrame !== null) cancelAnimationFrame(motionFrame);
+    motionFrame = null;
+    lastFrameTime = 0;
+    pointer.x = pointer.y = pointer.targetX = pointer.targetY = 0;
+    ['--scene-x','--scene-y','--title-x','--title-y'].forEach(name => heroScene.style.removeProperty(name));
+  }
+  function updateParallaxAvailability() {
+    const enabled = finePointer.matches && !reducedMotion.matches && heroVisible && !document.hidden;
+    heroScene.classList.toggle('has-parallax', enabled);
+    if (!enabled) resetParallax();
+  }
+  function moveParallax(time) {
+    const elapsed = lastFrameTime ? Math.min(time-lastFrameTime,50) : 16;
+    lastFrameTime = time;
+    const ease = 1-Math.exp(-elapsed/90);
+    pointer.x += (pointer.targetX-pointer.x)*ease;
+    pointer.y += (pointer.targetY-pointer.y)*ease;
+    heroScene.style.setProperty('--scene-x', `${(-pointer.x*8).toFixed(2)}px`);
+    heroScene.style.setProperty('--scene-y', `${(-pointer.y*6).toFixed(2)}px`);
+    heroScene.style.setProperty('--title-x', `${(pointer.x*12).toFixed(2)}px`);
+    heroScene.style.setProperty('--title-y', `${(pointer.y*10).toFixed(2)}px`);
+    if (Math.abs(pointer.targetX-pointer.x)+Math.abs(pointer.targetY-pointer.y)>0.002) {
+      motionFrame = requestAnimationFrame(moveParallax);
+    } else {
+      motionFrame = null;
+      lastFrameTime = 0;
+    }
+  }
+  function requestParallax() {
+    if (motionFrame === null) motionFrame = requestAnimationFrame(moveParallax);
+  }
+  heroScene.addEventListener('pointermove', event => {
+    if (!heroScene.classList.contains('has-parallax') || event.pointerType !== 'mouse') return;
+    const bounds = heroScene.getBoundingClientRect();
+    pointer.targetX = Math.max(-1,Math.min(1,(event.clientX-bounds.left)/bounds.width*2-1));
+    pointer.targetY = Math.max(-1,Math.min(1,(event.clientY-bounds.top)/bounds.height*2-1));
+    requestParallax();
+  }, {passive:true});
+  heroScene.addEventListener('pointerleave', () => {
+    if (!heroScene.classList.contains('has-parallax')) return;
+    pointer.targetX = pointer.targetY = 0;
+    requestParallax();
+  });
+  if ('IntersectionObserver' in window) {
+    const heroObserver = new IntersectionObserver(entries => {
+      heroVisible = entries[0].isIntersecting;
+      updateParallaxAvailability();
+    });
+    heroObserver.observe(heroScene);
+  }
+  finePointer.addEventListener('change', updateParallaxAvailability);
+  reducedMotion.addEventListener('change', updateParallaxAvailability);
+  document.addEventListener('visibilitychange', updateParallaxAvailability);
+  updateParallaxAvailability();
+
+  // Stagger each visible row from left to right, matching the responsive grid.
+  const artworkGroups = [...document.querySelectorAll('.ad-grid,.color-grid,.film-stills')];
+  function updateRevealOrder() {
+    artworkGroups.forEach(group => {
+      const columns = getComputedStyle(group).gridTemplateColumns.split(' ').length;
+      group.querySelectorAll('figure.reveal').forEach((element,index) => {
+        element.style.setProperty('--reveal-delay', `${(index%columns)*95}ms`);
+      });
+    });
+  }
+  updateRevealOrder();
+  if ('ResizeObserver' in window) {
+    const gridObserver = new ResizeObserver(updateRevealOrder);
+    artworkGroups.forEach(group => gridObserver.observe(group));
+  }
+  // IntersectionObserver reveals content without scroll listeners.
+  if ('IntersectionObserver' in window && !reducedMotion.matches) {
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -35,6 +114,12 @@
       element.classList.add('will-reveal');
       observer.observe(element);
     });
+    reducedMotion.addEventListener('change', () => {
+      if (reducedMotion.matches) {
+        observer.disconnect();
+        document.querySelectorAll('.will-reveal').forEach(element => element.classList.add('is-visible'));
+      }
+    });
   }
 
   const artworks = [...document.querySelectorAll('[data-lightbox]')];
@@ -43,6 +128,24 @@
   const imageError = document.getElementById('image-error');
   let currentArt = 0;
   let returnFocus = null;
+  let dialogAnimation = null;
+  let imageAnimation = null;
+  let dialogClosing = false;
+  function closeLightbox() {
+    if (!dialog.open || dialogClosing) return;
+    dialogClosing = true;
+    dialogAnimation?.cancel();
+    if (reducedMotion.matches || !dialog.animate) {
+      dialog.close();
+      return;
+    }
+    dialog.classList.add('is-closing');
+    dialogAnimation = dialog.animate([
+      {opacity:1,transform:'translateY(0) scale(1)'},
+      {opacity:0,transform:'translateY(8px) scale(.985)'}
+    ], {duration:160,easing:'ease-out',fill:'forwards'});
+    dialogAnimation.finished.then(() => { if (dialogClosing) dialog.close(); }).catch(() => {});
+  }
   function showArtwork(index) {
     currentArt = (index + artworks.length) % artworks.length;
     const source = artworks[currentArt];
@@ -56,17 +159,49 @@
   }
   artworks.forEach((button,index) => button.addEventListener('click', () => {
     returnFocus = button;
+    dialogClosing = false;
+    dialog.classList.remove('is-closing');
+    dialogAnimation?.cancel();
     showArtwork(index);
-    dialog.showModal();
+    if (!dialog.open) dialog.showModal();
     document.body.classList.add('modal-open');
+    if (!reducedMotion.matches && dialog.animate) {
+      dialogAnimation = dialog.animate([
+        {opacity:0,transform:'translateY(14px) scale(.975)'},
+        {opacity:1,transform:'translateY(0) scale(1)'}
+      ], {duration:280,easing:'cubic-bezier(.16,1,.3,1)'});
+    }
   }));
-  image.addEventListener('load', () => image.classList.remove('is-loading'));
+  image.addEventListener('load', () => {
+    image.classList.remove('is-loading');
+    imageAnimation?.cancel();
+    if (!reducedMotion.matches && dialog.open && !dialogClosing && image.animate) {
+      imageAnimation = image.animate([
+        {opacity:0,transform:'translateY(6px) scale(.99)'},
+        {opacity:1,transform:'translateY(0) scale(1)'}
+      ], {duration:260,easing:'cubic-bezier(.16,1,.3,1)'});
+    }
+  });
   image.addEventListener('error', () => { image.classList.remove('is-loading'); imageError.hidden = false; });
-  document.getElementById('close-lightbox').addEventListener('click', () => dialog.close());
+  document.getElementById('close-lightbox').addEventListener('click', closeLightbox);
   document.getElementById('previous-art').addEventListener('click', () => showArtwork(currentArt - 1));
   document.getElementById('next-art').addEventListener('click', () => showArtwork(currentArt + 1));
-  dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
-  dialog.addEventListener('close', () => { document.body.classList.remove('modal-open'); returnFocus?.focus({preventScroll:true}); });
+  dialog.addEventListener('click', event => { if (event.target === dialog) closeLightbox(); });
+  dialog.addEventListener('cancel', event => { event.preventDefault(); closeLightbox(); });
+  dialog.addEventListener('close', () => {
+    dialogClosing = false;
+    dialog.classList.remove('is-closing');
+    dialogAnimation?.cancel();
+    imageAnimation?.cancel();
+    document.body.classList.remove('modal-open');
+    returnFocus?.focus({preventScroll:true});
+  });
+  reducedMotion.addEventListener('change', () => {
+    if (reducedMotion.matches) {
+      dialogAnimation?.finish();
+      imageAnimation?.finish();
+    }
+  });
   dialog.addEventListener('keydown', event => {
     if (event.key === 'ArrowRight') { event.preventDefault(); showArtwork(currentArt + 1); }
     if (event.key === 'ArrowLeft') { event.preventDefault(); showArtwork(currentArt - 1); }
