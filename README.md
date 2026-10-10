@@ -1,0 +1,50 @@
+# CassieZha 创意作品集
+
+网站地址：https://cassiee-z.github.io/cassie-creative-world/
+
+基于用户提供的首页和「色彩与日常」参考图制作，包含：
+
+- 漫画首页、CassieZha 英文署名与导航。
+- JOYO 4 张广告海报和 4 张产品视觉作品，可点击放大、左右切换。
+- 「色彩与日常」完整排版预览，英文署名已修改。
+- 《冬烬之地》完整短片（网页 MP4，保留声音）与作品介绍。
+- 数字人视频预留区、个人经历、PDF 简历和邮箱联系。
+- 手机布局、键盘导航、减少动态效果设置与图片/视频错误提示。
+
+## 本地预览
+
+在本目录运行：
+
+```sh
+python3 -m http.server 8080
+```
+
+浏览器打开 http://localhost:8080 。网站是纯静态 HTML/CSS/JavaScript，无需安装前端依赖或进行打包，也可以直接双击 index.html。
+
+## 添加数字人视频
+
+1. 把最终视频保存为 `assets/video/digital-cassie.mp4`。
+2. 修改 `site-config.js`：
+
+```js
+window.PORTFOLIO_CONFIG = {
+  digitalHumanVideo: './assets/video/digital-cassie.mp4',
+  digitalHumanPoster: ''
+};
+```
+
+3. 如有视频封面，添加至 `assets/images/`，在 `digitalHumanPoster` 填入相对路径。
+4. 推送到 GitHub，GitHub Pages 会更新网站。填写视频路径后，预留界面自动替换成带播放控件的视频。
+
+## 更新其他内容
+
+- 页面文字与作品顺序：`index.html`。
+- 颜色、字体与布局：`styles.css`。
+- 图片放大、复制邮箱和视频播放：`script.js`。
+- 素材：`assets/`。
+
+本网站使用相对路径，可部署在 GitHub Pages 的项目目录。根目录的 `.nojekyll` 让 GitHub 直接发布静态文件。视频由提供的 MOV 转为 H.264 / AAC MP4，并启用网页渐进式播放；未上传体积较大的原始 MOV。
+
+首页插画由提供的参考图裁切与局部清理而成，标题、按钮和导航由网页渲染。「冬烬之地」介绍依据提供的视频画面与素材撰写，后续可以在 `index.html` 中调整。PDF 简历保留用户提供的原始文件。
+
+字体：Anton、Space Grotesk（SIL Open Font License，见 `assets/fonts/` 中许可证）；中文使用系统字体。作品图片和影片来源于用户提供的材料。
