@@ -33,7 +33,7 @@ python3 -m http.server 8080
 
 ## 更新数字人视频
 
-数字人区域已加入用户提供的 `JOYO_AC20S_AC40S_Bilingual.mp4`，网页文件为 `assets/video/digital-cassie.mp4`。仅调整 MP4 索引位置，保留原 H.264 / AAC 编码、完整画幅、原声和画面中的双语字幕。封面提取自影片，点击封面后才加载视频；播放器会暂停其他正在播放的音频或影片。
+数字人视频位于「色彩与日常」区域的「把声音，变成画面。」标语之后。数字人区域已加入用户提供的 `JOYO_AC20S_AC40S_Bilingual.mp4`，网页文件为 `assets/video/digital-cassie.mp4`。仅调整 MP4 索引位置，保留原 H.264 / AAC 编码、完整画幅、原声和画面中的双语字幕。封面提取自影片，点击封面后才加载视频；播放器会暂停其他正在播放的音频或影片。
 
 1. 把最终视频保存为 `assets/video/digital-cassie.mp4`。
 2. 修改 `site-config.js`：
