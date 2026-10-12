@@ -297,19 +297,25 @@
     if (event.key === 'ArrowLeft') { event.preventDefault(); showArtwork(currentArt - 1); }
   });
 
-  const filmVideo = document.getElementById('winter-video');
-  const filmButton = document.getElementById('film-play');
-  const filmError = document.getElementById('film-error');
-  filmButton.addEventListener('click', async () => {
-    filmButton.hidden = true;
-    filmVideo.hidden = false;
-    filmVideo.focus({preventScroll: true});
-    try { await filmVideo.play(); } catch (_) {
-      // Native controls remain available when a browser refuses automatic playback.
-      if (filmVideo.error) filmError.hidden = false;
-    }
+  [['winter-video', 'film-play', 'film-error'], ['joyo-ad-video', 'joyo-ad-play', 'joyo-ad-error']].forEach(([videoId, buttonId, errorId]) => {
+    const video = document.getElementById(videoId);
+    const button = document.getElementById(buttonId);
+    const error = document.getElementById(errorId);
+    button.addEventListener('click', async () => {
+      button.hidden = true;
+      video.hidden = false;
+      error.hidden = true;
+      video.focus({preventScroll: true});
+      try { await video.play(); } catch (_) {
+        // Native controls remain available when a browser refuses automatic playback.
+        if (video.error) error.hidden = false;
+      }
+    });
+    video.addEventListener('error', () => { error.hidden = false; });
+    video.querySelectorAll('source').forEach(source => {
+      source.addEventListener('error', () => { error.hidden = false; });
+    });
   });
-  filmVideo.addEventListener('error', () => { filmError.hidden = false; });
 
   const config = window.PORTFOLIO_CONFIG || {};
   if (config.digitalHumanVideo) {

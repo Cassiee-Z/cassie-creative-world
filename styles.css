@@ -77,6 +77,12 @@ figure,p,h1,h2,h3{margin:0}
 .heading-caption p{margin-top:9px;font-size:12px;color:var(--muted)}
 .section-description{font-size:14px;line-height:1.9;max-width:650px;margin-bottom:34px;color:var(--muted)}
 .ad-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.joyo-ad-feature{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:clamp(30px,4vw,64px);align-items:center;margin-top:54px;padding-top:42px;border-top:1px solid var(--line)}
+.joyo-ad-feature .film-stage{aspect-ratio:47/35;min-width:0}
+.joyo-ad-copy{min-width:0}
+.joyo-ad-copy h3{font-family:Anton,'Arial Narrow',sans-serif;font-size:clamp(44px,4.6vw,68px);font-weight:400;line-height:1;letter-spacing:-.5px}
+.joyo-ad-meta{font-size:12px;line-height:1.8;margin-top:22px;font-weight:600}
+.joyo-ad-description{font-size:14px;line-height:1.95;color:var(--muted);max-width:390px;margin-top:18px}
 .image-button{display:block;padding:0;width:100%;position:relative;overflow:hidden;background:#e9e5d8}
 .image-button img{width:100%;height:auto;transition:transform .55s cubic-bezier(.16,1,.3,1)}
 .image-button:hover img{transform:scale(1.035)}
@@ -307,6 +313,7 @@ details[open] .detail-plus{transform:rotate(45deg)}
   .editorial-heading{align-items:flex-end;gap:12px;padding-bottom:14px;margin-bottom:16px}.display-title{font-size:64px;letter-spacing:-.5px}.heading-caption>span{font-size:17px;letter-spacing:0}.heading-caption p{max-width:95px;font-size:10px;line-height:1.6}
   .section-description{font-size:12px;line-height:1.8;margin-bottom:25px}
   .ad-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:25px 14px}.ad-section{padding-bottom:75px}
+  .joyo-ad-feature{grid-template-columns:1fr;gap:25px;margin-top:35px;padding-top:28px}.joyo-ad-copy{order:-1}.joyo-ad-copy h3{font-size:44px}.joyo-ad-meta{font-size:11px;margin-top:16px}.joyo-ad-description{font-size:12px;margin-top:12px;max-width:none}
   figcaption{font-size:10px;gap:8px;padding-top:9px}figcaption span{font-size:10px}.expand-mark{width:28px;height:28px;right:8px;bottom:8px;font-size:19px;opacity:1;transform:none}
   .color-section{padding-bottom:75px}.color-section .display-title{font-size:56px}.color-section .heading-caption>span{font-size:16px}
   .color-grid{grid-template-columns:1fr;gap:30px}.color-landscape img{aspect-ratio:1.48}.color-still{width:88%;margin-top:4px}.color-jam{width:90%;margin-top:0}.color-manifesto{padding:28px 0 10px}.color-manifesto>span{font-size:45px}.color-manifesto p{font-size:56px;letter-spacing:-2px;margin-top:10px}
