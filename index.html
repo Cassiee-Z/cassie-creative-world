@@ -15,7 +15,7 @@
   <link rel="preload" href="./assets/fonts/anton-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="./assets/images/creative-world.webp" media="(min-width:768px)" as="image" fetchpriority="high">
   <link rel="preload" href="./assets/images/creative-world-mobile.webp" media="(max-width:767px)" as="image" fetchpriority="high">
-  <link rel="stylesheet" href="./styles.css?v=digital-position-20261012">
+  <link rel="stylesheet" href="./styles.css?v=play-room-position-20261012">
   <script src="./site-config.js?v=digital-20261012" defer></script>
   <script src="./music-data.js?v=music-20261010" defer></script>
   <script src="./script.js?v=digital-20261012" defer></script>
@@ -52,8 +52,17 @@
 
     <section class="work-intro section-wrap reveal" id="works">
       <div class="intro-title"><p class="section-kicker">SELECTED WORKS</p><h2>让创意，<br>被看见。</h2></div>
-      <div class="intro-note"><p>从音乐出发，<br>在广告、视觉与影像之间探索。</p><nav class="work-index" aria-label="作品分类"><a href="#ad-creative">广告创意 <span>↗</span></a><a href="#color-everyday">色彩与日常 <span>↗</span></a><a href="#music">音乐创作 <span>↗</span></a><a href="#winter-embers">影像叙事 <span>↗</span></a></nav></div>
+      <div class="intro-note"><p>从音乐出发，<br>在广告、视觉与影像之间探索。</p><nav class="work-index" aria-label="作品分类"><a href="#joyo-jam-buddy-film">广告创意 <span>↗</span></a><a href="#color-everyday">色彩与日常 <span>↗</span></a><a href="#music">音乐创作 <span>↗</span></a><a href="#winter-embers">影像叙事 <span>↗</span></a></nav></div>
     </section>
+
+    <article class="joyo-ad-feature section-wrap reveal" id="joyo-jam-buddy-film" aria-labelledby="joyo-film-heading">
+      <div class="film-stage joyo-ad-stage">
+        <video id="joyo-ad-video" controls playsinline preload="none" width="752" height="560" poster="./assets/images/joyo-jam-buddy-iii-cover.webp" aria-label="JOYO JAM BUDDY III 橙色款创意宣传广告" hidden><source src="./assets/video/joyo-jam-buddy-iii.mp4" type="video/mp4">你的浏览器暂不支持视频播放，可以<a href="./assets/video/joyo-jam-buddy-iii.mp4">打开广告视频</a>观看。</video>
+        <button class="film-play" id="joyo-ad-play" aria-label="播放 JOYO JAM BUDDY III 橙色款广告，时长 15 秒"><img src="./assets/images/joyo-jam-buddy-iii-cover.webp" srcset="./assets/images/joyo-jam-buddy-iii-cover-400.webp 400w, ./assets/images/joyo-jam-buddy-iii-cover.webp 752w" sizes="(max-width:767px) calc(100vw - 44px), (max-width:1600px) calc((100vw - 160px)*.58), 790px" width="752" height="560" alt="JOYO 橙色音箱位于前景，身后的复古房间和人物倒置悬浮" loading="lazy"><span class="film-play-inner"><span class="film-play-circle" aria-hidden="true">▶</span><span>播放广告 <span class="film-duration">00:15</span></span></span></button>
+        <p class="video-error" id="joyo-ad-error" role="alert" hidden>视频暂时无法播放，可以<a href="./assets/video/joyo-jam-buddy-iii.mp4">打开广告视频</a>观看。</p>
+      </div>
+      <div class="joyo-ad-copy"><h2 id="joyo-film-heading">PLAY THE<br>ROOM.</h2><p class="joyo-ad-meta">JAM BUDDY III · 橙色款 · 15 秒</p><p class="joyo-ad-description">让音乐改变房间的秩序。以复古配色、倾斜空间与倒置场景，呈现橙色音箱带来的听觉与视觉想象。</p></div>
+    </article>
 
     <section class="ad-section section-wrap" id="ad-creative">
       <div class="editorial-heading reveal"><h2 class="display-title">PLAY IT<br>LOUD.</h2><div class="heading-caption"><span>广告创意</span><p>JOYO 乐器产品系列视觉</p></div></div>
@@ -64,14 +73,6 @@
         <figure class="artwork reveal"><button class="image-button" data-lightbox="./assets/images/joyo-tone.webp" data-title="JOYO / TONE" data-description="R-31 街头调音时刻 · 产品场景海报" aria-label="放大 JOYO R-31 街头调音海报"><img src="./assets/images/joyo-tone.webp" srcset="./assets/images/joyo-tone-400.webp 400w, ./assets/images/joyo-tone-800.webp 800w, ./assets/images/joyo-tone.webp 1122w" sizes="(max-width:767px) calc((100vw - 58px)/2), (max-width:1600px) calc((100vw - 170px)/4), 320px" width="1122" height="1402" alt="TONE 字样下，吉他手向镜头展示蓝色 JOYO R-31 效果器" loading="lazy"><span class="expand-mark" aria-hidden="true">↗</span></button><figcaption><strong>TONE</strong><span>R-31</span></figcaption></figure>
         <figure class="artwork reveal"><button class="image-button" data-lightbox="./assets/images/joyo-live.webp" data-title="JOYO / LIVE" data-description="复古效果器 · 低机位演奏场景" aria-label="放大 JOYO 复古效果器海报"><img src="./assets/images/joyo-live.webp" srcset="./assets/images/joyo-live-400.webp 400w, ./assets/images/joyo-live-800.webp 800w, ./assets/images/joyo-live.webp 1122w" sizes="(max-width:767px) calc((100vw - 58px)/2), (max-width:1600px) calc((100vw - 170px)/4), 320px" width="1122" height="1402" alt="LIVE 字样下，吉他手用鞋踩下 JOYO 复古效果器" loading="lazy"><span class="expand-mark" aria-hidden="true">↗</span></button><figcaption><strong>LIVE</strong><span>复古效果器</span></figcaption></figure>
       </div>
-      <article class="joyo-ad-feature reveal" id="joyo-jam-buddy-film" aria-labelledby="joyo-film-heading">
-        <div class="film-stage joyo-ad-stage">
-          <video id="joyo-ad-video" controls playsinline preload="none" width="752" height="560" poster="./assets/images/joyo-jam-buddy-iii-cover.webp" aria-label="JOYO JAM BUDDY III 橙色款创意宣传广告" hidden><source src="./assets/video/joyo-jam-buddy-iii.mp4" type="video/mp4">你的浏览器暂不支持视频播放，可以<a href="./assets/video/joyo-jam-buddy-iii.mp4">打开广告视频</a>观看。</video>
-          <button class="film-play" id="joyo-ad-play" aria-label="播放 JOYO JAM BUDDY III 橙色款广告，时长 15 秒"><img src="./assets/images/joyo-jam-buddy-iii-cover.webp" srcset="./assets/images/joyo-jam-buddy-iii-cover-400.webp 400w, ./assets/images/joyo-jam-buddy-iii-cover.webp 752w" sizes="(max-width:767px) calc(100vw - 44px), (max-width:1600px) calc((100vw - 160px)*.58), 790px" width="752" height="560" alt="JOYO 橙色音箱位于前景，身后的复古房间和人物倒置悬浮" loading="lazy"><span class="film-play-inner"><span class="film-play-circle" aria-hidden="true">▶</span><span>播放广告 <span class="film-duration">00:15</span></span></span></button>
-          <p class="video-error" id="joyo-ad-error" role="alert" hidden>视频暂时无法播放，可以<a href="./assets/video/joyo-jam-buddy-iii.mp4">打开广告视频</a>观看。</p>
-        </div>
-        <div class="joyo-ad-copy"><h3 id="joyo-film-heading">PLAY THE<br>ROOM.</h3><p class="joyo-ad-meta">JAM BUDDY III · 橙色款 · 15 秒</p><p class="joyo-ad-description">让音乐改变房间的秩序。以复古配色、倾斜空间与倒置场景，呈现橙色音箱带来的听觉与视觉想象。</p></div>
-      </article>
     </section>
 
     <section class="color-section section-wrap" id="color-everyday">

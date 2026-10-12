@@ -58,7 +58,7 @@ window.PORTFOLIO_CONFIG = {
 
 本网站使用相对路径，可部署在 GitHub Pages 的项目目录。根目录的 `.nojekyll` 让 GitHub 直接发布静态文件。视频由提供的 MOV 转为 H.264 / AAC MP4，并启用网页渐进式播放；未上传体积较大的原始 MOV。
 
-JAM BUDDY III 广告位于广告创意区域 `#joyo-jam-buddy-film`。视频保存为 `assets/video/joyo-jam-buddy-iii.mp4`，来自用户提供的橙色款广告 MP4，仅调整 MP4 索引位置以便网页播放，保留原 H.264 / AAC 编码、原声、画面和来源元数据；封面从影片中提取。与音乐和其他影片共用播放互斥逻辑，避免声音重叠。
+JAM BUDDY III 广告「PLAY THE ROOM」位于作品目录之后、广告海报之前（`#joyo-jam-buddy-film`）；目录的「广告创意」入口从该视频开始。视频保存为 `assets/video/joyo-jam-buddy-iii.mp4`，来自用户提供的橙色款广告 MP4，仅调整 MP4 索引位置以便网页播放，保留原 H.264 / AAC 编码、原声、画面和来源元数据；封面从影片中提取。与音乐和其他影片共用播放互斥逻辑，避免声音重叠。
 
 音乐来自提供的「16首歌」文件夹，实际包含 17 首完整歌曲、1 首配乐及 2 段标注「未选择版」的片段；网站收录全部完整作品。MP3 和 M4A 保留原有音频编码，清理内嵌平台信息，封面提取为独立 WebP；WAV 配乐转为 192 kbps MP3 以便网页试听，原文件保留在用户素材目录。没有内嵌封面的 Swinging Hard 使用文字封面，《冬烬之地》音频使用影片封面。
 
