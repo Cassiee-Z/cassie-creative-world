@@ -172,6 +172,9 @@
   });
 
   // Any newly played song or video pauses the other media, including a future digital human video.
-  media.forEach(active => active.addEventListener('play',() => pauseOtherMedia(active)));
+  media.forEach(active => active.addEventListener('play',() => {
+    // A queued play event can arrive after this media has already been paused.
+    if (!active.paused && !active.ended) pauseOtherMedia(active);
+  }));
   updateTrackDetails();
 })();

@@ -297,7 +297,7 @@
     if (event.key === 'ArrowLeft') { event.preventDefault(); showArtwork(currentArt - 1); }
   });
 
-  [['winter-video', 'film-play', 'film-error'], ['joyo-ad-video', 'joyo-ad-play', 'joyo-ad-error']].forEach(([videoId, buttonId, errorId]) => {
+  [['winter-video', 'film-play', 'film-error'], ['joyo-ad-video', 'joyo-ad-play', 'joyo-ad-error'], ['digital-video', 'digital-play', 'digital-error']].forEach(([videoId, buttonId, errorId]) => {
     const video = document.getElementById(videoId);
     const button = document.getElementById(buttonId);
     const error = document.getElementById(errorId);
@@ -321,11 +321,16 @@
   if (config.digitalHumanVideo) {
     const digitalVideo = document.getElementById('digital-video');
     digitalVideo.src = config.digitalHumanVideo;
-    if (config.digitalHumanPoster) digitalVideo.poster = config.digitalHumanPoster;
-    digitalVideo.hidden = false;
+    document.getElementById('digital-open').href = config.digitalHumanVideo;
+    digitalVideo.closest('.digital-frame').classList.add('has-video');
+    if (config.digitalHumanPoster) {
+      digitalVideo.poster = config.digitalHumanPoster;
+      document.getElementById('digital-cover').src = config.digitalHumanPoster;
+      document.getElementById('digital-play').hidden = false;
+    } else {
+      digitalVideo.hidden = false;
+    }
     document.getElementById('digital-placeholder').hidden = true;
-    digitalVideo.addEventListener('error', () => { document.getElementById('digital-error').hidden = false; });
-    document.querySelector('.digital-note').textContent = '数字人介绍';
   }
 
   document.getElementById('copy-email').addEventListener('click', async () => {
