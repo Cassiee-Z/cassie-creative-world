@@ -3,7 +3,7 @@ window.PORTFOLIO_TRACKS = [
   {
     "id": "city-guitar-groove",
     "title": "城市律动摇滚 / City Guitar Groove",
-    "category": "rock",
+    "category": "instrumental",
     "src": "./assets/audio/city-guitar-groove.m4a",
     "cover": "./assets/images/music/city-guitar-groove.webp",
     "duration": 181.974
