@@ -86,7 +86,7 @@
   updateParallaxAvailability();
 
   // Stagger each visible row from left to right, matching the responsive grid.
-  const artworkGroups = [...document.querySelectorAll('.ad-grid,.color-grid,.film-stills,.process-asset-grid,.process-sequence-grid')];
+  const artworkGroups = [...document.querySelectorAll('.ad-grid,.color-grid,.joykey-scene-pair,.joykey-comparison-grid,.film-stills,.process-asset-grid,.process-sequence-grid')];
   function updateRevealOrder() {
     artworkGroups.forEach(group => {
       const columns = getComputedStyle(group).gridTemplateColumns.split(' ').length;
