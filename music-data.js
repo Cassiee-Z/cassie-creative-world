@@ -1,12 +1,12 @@
 // Music supplied and produced by CassieZha. Durations measured from source audio.
 window.PORTFOLIO_TRACKS = [
   {
-    "id": "midnight-signal",
-    "title": "MIDNIGHT SIGNAL",
-    "category": "english",
-    "src": "./assets/audio/midnight-signal.mp3",
-    "cover": "./assets/images/music/midnight-signal.webp",
-    "duration": 115.44
+    "id": "city-guitar-groove",
+    "title": "城市律动摇滚 / City Guitar Groove",
+    "category": "rock",
+    "src": "./assets/audio/city-guitar-groove.m4a",
+    "cover": "./assets/images/music/city-guitar-groove.webp",
+    "duration": 181.974
   },
   {
     "id": "gold-on-the-floor",

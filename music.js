@@ -12,7 +12,7 @@
   const error = document.getElementById('music-error');
   const filters = [...document.querySelectorAll('[data-music-filter]')];
   const media = [...document.querySelectorAll('audio,video')];
-  const labels = {chinese:'中文歌曲',english:'英文歌曲',soundtrack:'影视配乐'};
+  const labels = {rock:'律动摇滚',chinese:'中文歌曲',english:'英文歌曲',soundtrack:'影视配乐'};
   const rows = [];
   let current = 0;
   let filter = 'all';
